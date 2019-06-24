@@ -62,9 +62,9 @@
 
 myButton.addEventListener('click', function (e) {
   let request = new XMLHttpRequest()
-  request.open('get', '/xxx')
-  request.setRequestHeader('bomber', '18')
-  request.send()
+  request.open('post', '/xxx')
+  request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+  request.send('我偏要设置get请求的request第四部分内容')
 
   request.onreadystatechange = function () {
     if (request.readyState === 4) {
