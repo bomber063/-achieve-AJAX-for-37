@@ -106,4 +106,14 @@ content-type: text/json;charset=utf-8
 ***
 * 到这里的，我们就知道了http响应部分我们也可以获取
 ***
-
+### 请求和响应的小结
+* JS可以设置请求header吗？
+1. 第一部分 request.open('get','/xxx')
+2. 第二部分 request.setHeader('Content-type','x-www-form-urlencoded')
+3. 第三部分 空格换行不用管
+4. 第四部分 request.send('a=1&b=2')
+* JS可以获取响应header吗？
+1. 第一部分 request.status / request.statusText
+2. 第二部分 request.getResponseHeader() / request.getAllResponseHeaders()
+3. 第三部分 空格换行不用管
+4. 第四部分 request.responseText
