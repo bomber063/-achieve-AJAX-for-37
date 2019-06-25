@@ -53,3 +53,57 @@ Refused to set unsafe header "User-Agent"
 * **方方老师说这里因为是get请求，在浏览器的开发者工具中是看不到这个请求的第四部分内容的(body)，因为chorme浏览器认为get请求理论上不会有request的body，所以它就不展示出来，这只是一个约定俗成。并没有禁止你这么做，所以是看不到报错的。想要看到第四部分，不要用get换做post就可以看到**.
 * **MDN上面解释send()接受一个可选参数，允许您指定请求的正文; 这主要用于诸如此类的请求PUT。如果请求方法是GET或HEAD，body则忽略该参数并将请求正文设置为null**。
 * **通过post方法来测试就可以在NetWork->All->xxx->Request Payload里面看到你设置的内容**
+***
+上面就是介绍完设置**请求的部分**
+***
+下面就介绍如何读取**响应的部分**
+***
+### JS可以获取响应求头（header）吗
+* 在谷歌上输入js get response headers，或者直接找MDN，然后可以找一个API——[getAllResponseHeaders()](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/getAllResponseHeaders)将所有响应头（由CRLF分隔）作为字符串返回，或者null如果未收到响应则返回。如果发生网络错误，则返回空字符串。
+* 前端代码我们增加一句
+```
+      console.log(request.getAllResponseHeaders())
+```
+* 就可以在控制台看到**所有**的响应头信息啦,这些都是字符串，每一行都由回车符和换行符（\r\n）终止。这些基本上是分隔每个标题的分隔符，我们跟控制台的里面的NetWork->All->xxx->Response Headers里面点击view source可以看到响应头信息是一样的，但是**控制台的有大写，而且顺序有点不同**
+```
+access-control-allow-origin: *
+date: Tue, 25 Jun 2019 10:15:12 GMT
+connection: keep-alive
+transfer-encoding: chunked
+content-type: text/json;charset=utf-8
+```
+* 如果只需要获取一个响应头，不需要所有的响应头呢，可以用API——[XMLHttpRequest.getResponseHeader()](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/getResponseHeader)方法返回包含指定头文本的字符串。
+如果在返回头中有多个具有相同的名称的响应头，那么响应的值就会是用逗号和空格将值分隔的字符串。getResponseHeader（）方法以UTF字节序列的形式返回值。搜索标题名称是不区分大小写的。
+* 这里需要你写入相应的对应的参数，比如参数date就会返回Tue, 25 Jun 2019 10:15:12 GMT，代码为
+```
+      console.log(request.getResponseHeader('date'))
+```
+### JS可以获取响应求行吗
+* 前面我们介绍过的API——[XMLHttpRequest.status](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/status)返回了XMLHttpRequest 响应中的数字状态码。status 的值是一个无符号短整型。在请求完成前，status的值为0。值得注意的是，如果 XMLHttpRequest 出错，浏览器返回的 status 也为0。
+* 响应行里面的OK能获取吗？通过谷歌上输入js get response message，或者直接找MDN，然后可以找一个API——[XMLHttpRequest.statusText](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/statusText)返回了XMLHttpRequest 请求中由服务器返回的一个DOMString 类型的文本信息，这则信息中也包含了响应的数字状态码。不同于使用一个数字来指示的状态码XMLHTTPRequest.status，这个属性包含了返回状态对应的文本信息，例如"OK"或是"Not Found"。如果请求的状态readyState的值为"UNSENT"或者"OPENED"，则这个属性的值将会是一个空字符串。
+* 前端代码增加一句，我们就可以在控制台看到OK啦。
+```
+      console.log(request.statusText)
+```
+### 响应第三部分是一个空格，所以不用获取
+### JS响应的第四部分如何获取呢
+* 这个前面已经说过啦，就是API——[XMLHttpRequest.responseText](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/responseText)属性返回一个DOMString，它包含对文本的请求的响应，如果请求不成功或尚未发送，则返回null。responseText属性在请求完成之前将会得到部分属性。 如果 XMLHttpRequest.responseType 的值不是 text 或者空字符串，届时访问 XMLHttpRequest.responseText 将抛出 InvalidStateError 异常。
+* 前端增加一句代码，就可以看到后端返回的信息啦
+```
+      console.log(request.responseText)
+```
+* 后端返回的信息
+```
+    {
+      "note":{
+        "to": "小谷",
+        "from": "bomber",
+        "heading": "打招呼",
+        "content": "hi"
+      }
+    }
+```
+***
+* 到这里的，我们就知道了http响应部分我们也可以获取
+***
+
