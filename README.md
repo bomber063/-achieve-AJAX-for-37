@@ -140,3 +140,33 @@ content-type: text/json;charset=utf-8
 * 所以浏览器接受到的HTTP响应的**第一部分就可以判断400啦，然后再下载其他的响应内容的**。
 * 所以我们一般都是先监听[XMLHttpRequest.readyState](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/readyState)等于4,这个4的意思可以去[链接](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/readyState)看,就是代表下载完啦，**就获取到了完整的内容**，之后再去读取响应信息.因为还没有下载完就没必要去读取一个不完整的响应信息.
 * **如果是面试问到，最高回答自己理解比较深刻的地方，避免回答自己不熟悉的地方，比如光到眼睛之类的物理，人体神经学科等等**
+
+### 自己实现JQuery.ajax
+* 简单来说就是实现类似下面这样的代码：
+```
+window.jQuery.ajax=function(options){
+//代码
+}
+```
+* 它的功能就是[前面](https://github.com/bomber063/AJAX-for-36)说到的主要四行代码信息变成一行代码就搞定啦。
+* 前端部分代码修改为：
+```
+window.jQuery.ajax=function(url,method,body,successFn,failFn,){
+    let request = new XMLHttpRequest()
+    request.open(method, url)
+    request.onreadystatechange = function () {
+      if (request.readyState === 4) {
+        if (request.status >= 200 && request.status < 300) {
+          successFn.call(undefined,request.responseText)
+        }
+        else if (request.status >= 400) {
+          failFn.call(undefined,request)
+        }
+      }
+    }
+    request.send(body)
+}
+
+window.$=window.jQuery
+```
+

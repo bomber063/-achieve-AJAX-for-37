@@ -60,30 +60,48 @@
 //   }, 0);
 // })
 
-myButton.addEventListener('click', function (e) {
-  let request = new XMLHttpRequest()
-  request.open('post', '/xxx')
-  request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
-  request.send('我偏要设置get请求的request第四部分内容')
-
-  request.onreadystatechange = function () {
-    if (request.readyState === 4) {
-      console.log('说明请求完毕')
-      console.log(request.getResponseHeader('date'))
-      console.log(request.statusText)
-      console.log(request.responseText)
-      if (request.status >= 200 && request.status < 300) {
-        let string = request.responseText
-        let object = window.JSON.parse(string)//把符合JSON语法的字符串转换成JS对应的值（这里就是对象）。这个值包括数组，函数，布尔等等
-
-      }
-      else if (request.status >= 400) {
-        console.log('说明请求失败')
+window.jQuery.ajax=function(url,method,body,successFn,failFn,){
+    let request = new XMLHttpRequest()
+    request.open(method, url)
+    request.onreadystatechange = function () {
+      if (request.readyState === 4) {
+        if (request.status >= 200 && request.status < 300) {
+          successFn.call(undefined,request.responseText)
+        }
+        else if (request.status >= 400) {
+          failFn.call(undefined,request)
+        }
       }
     }
-  }
+    request.send(body)
+}
 
-})
+window.$=window.jQuery
+
+// myButton.addEventListener('click', function (e) {
+//   let request = new XMLHttpRequest()
+//   request.open('post', '/xxx')
+//   request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+//   request.send('我偏要设置get请求的request第四部分内容')
+
+//   request.onreadystatechange = function () {
+//     if (request.readyState === 4) {
+//       console.log('说明请求完毕')
+//       console.log(request.getResponseHeader('date'))
+//       console.log(request.statusText)
+//       console.log(request.responseText)
+//       if (request.status >= 200 && request.status < 300) {
+//         let string = request.responseText
+//         let object = window.JSON.parse(string)//把符合JSON语法的字符串转换成JS对应的值（这里就是对象）。这个值包括数组，函数，布尔等等
+
+//       }
+//       else if (request.status >= 400) {
+//         console.log('说明请求失败')
+//       }
+//     }
+//   }
+
+// })
 
 
 // myButton.addEventListener('click', function (e) {
