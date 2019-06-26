@@ -121,3 +121,22 @@ content-type: text/json;charset=utf-8
 * 从客户端和服务端来解释
 1. 客户端(比如chorme)可以发请求，而且请求最多有四部分，说明可以设置请求，就是set request。客户端一般没有端口。
 2. 服务端（比如node.js）可以发响应，而且响应最多有四部分，说明可以设置响应，就是set responese。而服务端一般响应的端口都是[80](https://baike.baidu.com/item/80%E7%AB%AF%E5%8F%A3/7581041?fr=aladdin)端口。
+
+### 浏览器是先下载全部响应内容，然后再判断是不是400吗？
+* 如果响应有400MB，那么下载400Mb的内容肯定不是一下就完成，需要几分钟的时间。
+* 这里继续说一下TCP/IP协议
+> HTML/CSS/JS/JSON是基于HTTP协议传输的。然后HTTP协议是基于TCP/IP协议传输的。一个人输入一个url请求并不是一下，马上就传给服务器的，而是经过了很多过程，比如从服务器（server）到客户端（client）经过的过程前面我们说明过，见[链接](https://github.com/bomber063/The-mid-term-exam-for-jirengu-fangfang/tree/master/%E7%AC%AC9%E9%A2%98)。这里在大概**补充**说一下：
+1. 有些人会从计算机以外的信息来考虑，比如光->人眼->视觉神经->反馈到大脑->大脑指挥手去键盘来敲击回车键->键盘会触发电路的一个开关->电信号->到传感器->...->最终变成一个ASCII码的数字->传入给操作系统->操作系统就知道你按了回车或者字母或者某个按键->...->告诉浏览器
+2. 浏览器拿到url，也就是网址后->看浏览器自己的DNS缓存(看看之前是否有访问过该网址)->如果没有访问过，就去问DNS，发起DNS查询(这个查询先从顶级域名到下一级域名开始查询，具体见[链接](https://github.com/bomber063/The-mid-term-exam-for-jirengu-fangfang/tree/master/%E7%AC%AC9%E9%A2%98))->查询到IP后返回给给浏览器
+3. 拿到IP后就根据IP建立TCP链接(通过三次握手来建立，具体见[链接](https://github.com/bomber063/The-mid-term-exam-for-jirengu-fangfang/tree/master/%E7%AC%AC9%E9%A2%98))，当然如果是UTP协议就不需要确定这三次握手，为什么要三次握手？
+1. A(比如某个浏览器)可以发请求.
+2. A(比如某个浏览器)可以收请求。
+3. B（比如某个服务器）可以发请求。
+4. B（比如某个服务器）可以收请求。
+> 简单说就是A和B双方都需要确定都可以收发请求。
+4. 然后就开始发送HTTP请求，如果是**第二部分或者第四部分很大就需要分批发送**,有的服务器对数据包限制是4k(见[链接](https://www.jianshu.com/p/5e39929e1d57))有的64k(见[链接](https://www.cnblogs.com/mfrbuaa/p/4297874.html))
+5. 然后就是建立连接，然后后台收到HTTP请求，后台去处理这个请求。后台就开始响应，响应依然是建立TCP/IP连接。也就是服务器(server)和客户端(client)传送HTTP的4个部分的响应传输。
+6. 此时第一部分就包含了400,**发送完**第一部分就会发送第二部分，如果第二部分很大(比如超过一个数据包的大小)需要很多次发送
+* 所以浏览器接受到的HTTP响应的**第一部分就可以判断400啦，然后再下载其他的响应内容的**。
+* 所以我们一般都是先监听[XMLHttpRequest.readyState](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/readyState)等于4,这个4的意思可以去[链接](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/readyState)看,就是代表下载完啦，**就获取到了完整的内容**，之后再去读取响应信息.因为还没有下载完就没必要去读取一个不完整的响应信息.
+* **如果是面试问到，最高回答自己理解比较深刻的地方，避免回答自己不熟悉的地方，比如光到眼睛之类的物理，人体神经学科等等**
