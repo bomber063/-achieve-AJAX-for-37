@@ -117,3 +117,7 @@ content-type: text/json;charset=utf-8
 2. 第二部分 request.getResponseHeader() / request.getAllResponseHeaders()
 3. 第三部分 空格换行不用管
 4. 第四部分 request.responseText
+* 可以看出来AJAX能够获取响应头，而node.js能够设置响应头。
+* 从客户端和服务端来解释
+1. 客户端(比如chorme)可以发请求，而且请求最多有四部分，说明可以设置请求，就是set request。客户端一般没有端口。
+2. 服务端（比如node.js）可以发响应，而且响应最多有四部分，说明可以设置响应，就是set responese。而服务端一般响应的端口都是80端口。
