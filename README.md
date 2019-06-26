@@ -151,22 +151,35 @@ window.jQuery.ajax=function(options){
 * 它的功能就是[前面](https://github.com/bomber063/AJAX-for-36)说到的主要四行代码信息变成一行代码就搞定啦。
 * 前端部分代码修改为：
 ```
-window.jQuery.ajax=function(url,method,body,successFn,failFn,){
+window.jQuery.ajax=function(url,method,body,successFn,failFn){//传入五个参数
     let request = new XMLHttpRequest()
-    request.open(method, url)
+    request.open(method, url)//这里两个参数分别是请求方法和路径
     request.onreadystatechange = function () {
       if (request.readyState === 4) {
         if (request.status >= 200 && request.status < 300) {
-          successFn.call(undefined,request.responseText)
+          successFn.call(undefined,request.responseText)//这里的参数是调用成功后的函数
         }
         else if (request.status >= 400) {
-          failFn.call(undefined,request)
+          failFn.call(undefined,request)//这里的参数是调用失败后的函数
         }
       }
     }
-    request.send(body)
+    request.send(body)//这里的参数是请求的主体
 }
 
 window.$=window.jQuery
 ```
+* 在定义了jQuery的前提下，我们使用如下代码：
+```
+ myButton.addEventListener('click', function (e) {
+  window.jQuery.ajax(
+    '/xxx',
+    'post',
+    'a=1&b=2',
+    (x)=>{console.log(x)},//这里可以传入一个参数，如x，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request.responseText
+    (xx)=>{console.log(xx)}//这里可以传入一个参数，如xx，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request
+  )
+})
+```
+* 之后我们就在点击button后就可以在开发者工具中看到请求信息啦，
 

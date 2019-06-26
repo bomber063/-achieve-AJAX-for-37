@@ -60,23 +60,41 @@
 //   }, 0);
 // })
 
-window.jQuery.ajax=function(url,method,body,successFn,failFn,){
+window.jQuery=function(nodeOrSelector){
+  let nodes={}
+  nodes.addClass=function(){}
+  nodes.html=function(){}
+  return nodes
+}
+
+window.jQuery.ajax=function(url,method,body,successFn,failFn){//传入五个参数
     let request = new XMLHttpRequest()
-    request.open(method, url)
+    request.open(method, url)//这里两个参数分别是请求方法和路径
     request.onreadystatechange = function () {
       if (request.readyState === 4) {
         if (request.status >= 200 && request.status < 300) {
-          successFn.call(undefined,request.responseText)
+          successFn.call(undefined,request.responseText)//这里的参数是调用成功后的函数
         }
         else if (request.status >= 400) {
-          failFn.call(undefined,request)
+          failFn.call(undefined,request)//这里的参数是调用失败后的函数
         }
       }
     }
-    request.send(body)
+    request.send(body)//这里的参数是请求的主体
 }
 
 window.$=window.jQuery
+
+ myButton.addEventListener('click', function (e) {
+  window.jQuery.ajax(
+    '/xxx',
+    'post',
+    'a=1&b=2',
+    (x)=>{console.log(x)},//这里可以传入一个参数，如x，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request.responseText
+    (xx)=>{console.log(xx)}//这里可以传入一个参数，如xx，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request
+  )
+})
+
 
 // myButton.addEventListener('click', function (e) {
 //   let request = new XMLHttpRequest()
