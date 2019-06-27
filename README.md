@@ -181,5 +181,39 @@ window.$=window.jQuery
   )
 })
 ```
-* 之后我们就在点击button后就可以在开发者工具中看到请求信息啦，
+* 之后我们就在点击button后就可以在开发者工具中看到请求信息啦。
 
+* 以上的不足之处
+1. 过段时间你可能不一定能知道这五个参数分别**代表什么意思**，参数有点多，所以需要加上一个名字。
+2. 如果是get请求是没有请求体body的，但是这里又有body，那么就会出现问题。只能用一个undefined或者null来代替，如果有**很多undefined或者null显得代码有点奇怪**。C或者C++语言就有很多这样的代码,显的很奇怪，比如
+```
+xxx.(null,null,null,null,null,1)//C++的某个函数，是不是看不出来这些null是啥意思，而且太多null了。
+```
+***
+解决上面的问题的一个小技巧就是需要一个有**结构的参数，在JS里面只有对象是有结构的**，其他的类型都是普通的变量。
+***
+
+### 解决参数命名的问题
+* 前端代码修改为:
+```
+ myButton.addEventListener('click', function (e) {
+  let obj={
+    url:'/xxx',
+    method:'post',
+    body:'a=1&b=2',
+    successFn:(x)=>{console.log(x)},//这里可以传入一个参数，如x，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request.responseText
+    failFn:(xx)=>{console.log(xx)}//这里可以传入一个参数，如xx，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request
+  }
+  window.jQuery.ajax(obj)
+})
+```
+* 在JQ里面增加
+```
+window.jQuery.ajax=function(options){//把五个参数变成一个参数，然后再去解析这五个参数
+    let url=options.url
+    let method=options.method
+    let body=options.body
+    let successFn=options.successFn
+    let failFn=options.failFn
+}
+```

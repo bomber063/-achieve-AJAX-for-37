@@ -67,7 +67,13 @@ window.jQuery=function(nodeOrSelector){
   return nodes
 }
 
-window.jQuery.ajax=function(url,method,body,successFn,failFn){//传入五个参数
+window.jQuery.ajax=function(options){//传入五个参数
+    let url=options.url
+    let method=options.method
+    let body=options.body
+    let successFn=options.successFn
+    let failFn=options.failFn
+
     let request = new XMLHttpRequest()
     request.open(method, url)//这里两个参数分别是请求方法和路径
     request.onreadystatechange = function () {
@@ -86,13 +92,14 @@ window.jQuery.ajax=function(url,method,body,successFn,failFn){//传入五个参�
 window.$=window.jQuery
 
  myButton.addEventListener('click', function (e) {
-  window.jQuery.ajax(
-    '/xxx',
-    'post',
-    'a=1&b=2',
-    (x)=>{console.log(x)},//这里可以传入一个参数，如x，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request.responseText
-    (xx)=>{console.log(xx)}//这里可以传入一个参数，如xx，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request
-  )
+  let obj={
+    url:'/xxx',
+    method:'post',
+    body:'a=1&b=2',
+    successFn:(x)=>{console.log(x)},//这里可以传入一个参数，如x，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request.responseText
+    failFn:(xx)=>{console.log(xx)}//这里可以传入一个参数，如xx，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request
+  }
+  window.jQuery.ajax(obj)
 })
 
 
