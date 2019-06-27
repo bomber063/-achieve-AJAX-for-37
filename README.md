@@ -308,3 +308,23 @@ function f2(){}
     },//这里一个参数x，传入到两个不同的函数f1和f2里面即可
 ```
 * 这里总的来说就是定义一个函数successFn，但是不调用,让别人来调用，并且在调用的时候传入一个参数，之后得到的对应的两个函数，这个参数还是原来那个参数，但是函数是另外一个调用函数.
+
+### 封装的ajax想要设置header
+* 前端调用ajax代码增加一个header的value对应的是一个对象
+```
+  window.jQuery.ajax({
+    header:{
+      'content-type':'application/xxx-www-form-urlencode',
+      'bomber':'18'
+    },
+  })
+```
+* ajax里面的增加设置header的代码，**这里需要记住request.setRequestHeader(key,value)需要放到open之后,send之前**
+```
+    let header=options.header
+
+    for(let key in header){//request.setRequestHeader(key,value)需要放到open之后,send之前
+      let value=header[key]
+      request.setRequestHeader(key,value)
+    }
+```

@@ -67,16 +67,23 @@ window.jQuery=function(nodeOrSelector){
   return nodes
 }
 
-window.jQuery.ajax=function(options){//传入五个参数
+window.jQuery.ajax=function(options){//传入几个参数
     let url=options.url
     let method=options.method
     let body=options.body
     let successFn=options.successFn
     let failFn=options.failFn
-    
+    let header=options.header
+
 
     let request = new XMLHttpRequest()
     request.open(method, url)//这里两个参数分别是请求方法和路径
+
+    for(let key in header){//request.setRequestHeader(key,value)需要放到open之后,send之前
+      let value=header[key]
+      request.setRequestHeader(key,value)
+    }
+
     request.onreadystatechange = function () {
       if (request.readyState === 4) {
         if (request.status >= 200 && request.status < 300) {
@@ -101,6 +108,10 @@ window.$=window.jQuery
     url:'/xxx',
     method:'post',
     body:'a=1&b=2',
+    header:{
+      'content-type':'application/xxx-www-form-urlencode',
+      'bomber':'18'
+    },
     successFn:(x)=>{
       f1.call(undefined,x)
       f2.call(undefined,x)
