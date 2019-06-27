@@ -92,14 +92,13 @@ window.jQuery.ajax=function(options){//传入五个参数
 window.$=window.jQuery
 
  myButton.addEventListener('click', function (e) {
-  let obj={
+  window.jQuery.ajax({
     url:'/xxx',
     method:'post',
     body:'a=1&b=2',
     successFn:(x)=>{console.log(x)},//这里可以传入一个参数，如x，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request.responseText
     failFn:(xx)=>{console.log(xx)}//这里可以传入一个参数，如xx，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request
-  }
-  window.jQuery.ajax(obj)
+  })
 })
 
 

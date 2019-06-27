@@ -217,3 +217,14 @@ window.jQuery.ajax=function(options){//把五个参数变成一个参数，然�
     let failFn=options.failFn
 }
 ```
+* 由于就一个变量obj，那么我们就可以直接省略obj的申明
+* 前端代码修改为
+```
+  window.jQuery.ajax({
+    url:'/xxx',
+    method:'post',
+    body:'a=1&b=2',
+    successFn:(x)=>{console.log(x)},//这里可以传入一个参数，如x，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request.responseText
+    failFn:(xx)=>{console.log(xx)}//这里可以传入一个参数，如xx，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request
+  })
+```
