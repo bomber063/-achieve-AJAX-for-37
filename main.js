@@ -73,6 +73,7 @@ window.jQuery.ajax=function(options){//传入五个参数
     let body=options.body
     let successFn=options.successFn
     let failFn=options.failFn
+    
 
     let request = new XMLHttpRequest()
     request.open(method, url)//这里两个参数分别是请求方法和路径
@@ -89,14 +90,21 @@ window.jQuery.ajax=function(options){//传入五个参数
     request.send(body)//这里的参数是请求的主体
 }
 
+function f1(x){console.log('f1'+x)}
+function f2(x){console.log('f2'+x)}
+
 window.$=window.jQuery
 
  myButton.addEventListener('click', function (e) {
+
   window.jQuery.ajax({
-    url:'/bomber',
+    url:'/xxx',
     method:'post',
     body:'a=1&b=2',
-    successFn:(x)=>{console.log(x)},//这里可以传入一个参数，如x，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request.responseText
+    successFn:(x)=>{
+      f1.call(undefined,x)
+      f2.call(undefined,x)
+    },//这里一个参数x，传入到两个不同的函数f1和f2里面即可
     failFn:(xx)=>{console.log(xx)}//这里可以传入一个参数，如xx，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request
   })
 })
