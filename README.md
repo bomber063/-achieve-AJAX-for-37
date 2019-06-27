@@ -228,3 +228,68 @@ window.jQuery.ajax=function(options){//把五个参数变成一个参数，然�
     failFn:(xx)=>{console.log(xx)}//这里可以传入一个参数，如xx，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request
   })
 ```
+* 这里**说明一下，箭头函数是没有[arguments](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/arguments)的**。
+* 这里还有一个回调函数(callback)，也就是定义一个函数，但是并不调用它，而是别的地方来调用它。
+* 回调函数也是可以说是满足某种条件的函数。
+* 比如代码
+```
+ myButton.addEventListener('click', function (e) {
+  window.jQuery.ajax({
+    successFn:(x)=>{console.log(x)}//这里定义一个函数，但是没有调用它
+  })
+})
+```
+* 在JQ里面调用它并传入一个参数,而上面的x其实就是request.responeText。
+```
+        if (request.status >= 200 && request.status < 300) {
+          successFn.call(undefined,request.responseText)//这里的才是调用并传入一个参数responseText
+        }
+```
+* 我们可以直接把这个代码打印出来,因为是成功的，所以就可以看到后端传送给他的就是下面的信息
+```
+  {
+      "note":{
+        "to": "小谷",
+        "from": "bomber",
+        "heading": "打招呼",
+        "content": "hi"
+      }
+    }
+```
+* 如果我们把url改成一个后端没有相应的路径，比如'/bomber'
+```
+ myButton.addEventListener('click', function (e) {
+  window.jQuery.ajax({
+    url:'/bomber',
+    method:'post',
+    body:'a=1&b=2',
+    successFn:(x)=>{console.log(x)},//这里可以传入一个参数，如x，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request.responseText
+    failFn:(xx)=>{console.log(xx)}//这里可以传入一个参数，如xx，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request
+  })
+})
+```
+* 我们就可以在控制台打出的信息报了404错误，并且穿了一个request信息。
+* 另外需要注意**就算请求失败了报错了，那么也是有可能有第四部分响应信息的。因为这个是后端给的**。
+* 比如后端代码中错误就显示
+```
+else {
+    response.statusCode = 404
+    response.setHeader('Content-Type', 'text/html;charset=utf-8')
+    response.write(`
+      {
+        "error": "not found"
+      }
+    `)
+    response.end()
+  }
+```
+* 那么前端代码修改下
+```
+          failFn.call(undefined,request.responseText)//
+```
+* 开发者工具的控制台就可以看到
+```
+      {
+        "error": "not found"
+      }
+```

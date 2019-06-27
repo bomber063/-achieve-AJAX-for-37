@@ -82,7 +82,7 @@ window.jQuery.ajax=function(options){//传入五个参数
           successFn.call(undefined,request.responseText)//这里的参数是调用成功后的函数
         }
         else if (request.status >= 400) {
-          failFn.call(undefined,request)//这里的参数是调用失败后的函数
+          failFn.call(undefined,request.responseText)//这里的参数是调用失败后的函数
         }
       }
     }
@@ -93,7 +93,7 @@ window.$=window.jQuery
 
  myButton.addEventListener('click', function (e) {
   window.jQuery.ajax({
-    url:'/xxx',
+    url:'/bomber',
     method:'post',
     body:'a=1&b=2',
     successFn:(x)=>{console.log(x)},//这里可以传入一个参数，如x，经过jQuery后会使用这个参数，这个参数在jQuery里面就是request.responseText
