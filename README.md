@@ -229,7 +229,7 @@ window.jQuery.ajax=function(options){//把五个参数变成一个参数，然�
   })
 ```
 * 这里**说明一下，箭头函数是没有[arguments](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/arguments)的**。
-* 这里还有一个回调函数(callback)，也就是定义一个函数，但是并不调用它，而是别的地方来调用它。
+* 这里还有一个[回调函数(callback)](https://developer.mozilla.org/en-US/docs/Glossary/Callback_function)，也就是定义一个函数，但是并不调用它，而是别的地方来调用它。
 * 回调函数也是可以说是满足某种条件的函数。
 * 比如代码
 ```
@@ -328,3 +328,49 @@ function f2(){}
       request.setRequestHeader(key,value)
     }
 ```
+* 设置好后我么就可以在开发者工具对应的请求里面看到自己设置的内容啦。
+* 比如这两行
+```
+      'content-type':'application/xxx-www-form-urlencode',
+      'bomber':'18'
+```
+### 看看jQuery文档里面AJAX是不是和我们自己手写的封装的AJAX一样呢？
+* 首先找到[JQ的中文文档](https://www.jquery123.com/),前面也讲过，点击[这里](https://github.com/bomber063/SimplifiedverionjQuery)跳转响应的JQ链接
+* 我们在JQ中文文档里面查询到[jQuery.ajax()](https://www.jquery123.com/jQuery.ajax/)
+* 可以看到在Jq中文文档里面的例举部分：
+1. data就是我们手写AJAX的body
+2. type就是我们手写的AJAX的method，不知道为什么这里叫做type
+3. datatype就是手写AJAX的content-type
+4. success就是手写AJAX的successFn
+5. error就是手写的AJAX的failFn
+* 我们看到JQ的中文文档，**是不是感觉写JQ的人感觉对HTTP毫无理解，因为单词都对不上**
+* 我们还可以看到JQ的中文文档里面可以有两种形式，
+1. 先一个url然后再接受一个参数
+```
+jQuery.ajax( url [, settings ] )
+```
+2. 直接接受一个参数
+```
+jQuery.ajax( [settings ] )
+```
+* 通过使用[arguments.length](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/arguments/length)就可以实现啦,arguments.length代表本次函数调用时传入函数的**实参数量**.
+* 前端代码修改为
+```
+  let url 
+  if(arguments.length===1){
+    url=options.url
+  }
+  else if(arguments.length===2){
+    url=arguments[0]
+    options=arguments[1]
+  }
+```
+* **实际参数**的代码可以添加一个第一个参数为url也是一样的效果
+```
+  window.jQuery.ajax('/xxx',{})
+```
+* 另外这里还用到的[for...in...](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...in)的遍历
+* [结构化编程维基百科](https://zh.wikipedia.org/wiki/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BC%96%E7%A8%8B)，简单俩说满足三个条件
+1. 顺序执行
+2. 类似if...else这样的代码
+3. 循环，比如while或者for等
