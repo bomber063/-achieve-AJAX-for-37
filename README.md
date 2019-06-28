@@ -374,3 +374,19 @@ jQuery.ajax( [settings ] )
 1. 顺序执行
 2. 类似if...else这样的代码
 3. 循环，比如while或者for等
+
+### ES6的语法解构赋值/解构赋值
+* [解构赋值](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#%E5%8F%98%E9%87%8F%E5%85%88%E5%A3%B0%E6%98%8E%E5%90%8E%E8%B5%8B%E5%80%BC%E6%97%B6%E7%9A%84%E8%A7%A3%E6%9E%84)语法是一种 Javascript 表达式。通过解构赋值, 可以将属性/值从对象/数组中取出,赋值给其他变量。
+* 前端部分代码只要一行
+```
+    let {url,method,body,successFn,failFn,header}=options
+```
+* 就代表了这六行
+```
+    // let url=options.url
+    // let method=options.method
+    // let body=options.body
+    // let successFn=options.successFn
+    // let failFn=options.failFn
+    // let header=options.header
+```
