@@ -377,6 +377,7 @@ jQuery.ajax( [settings ] )
 
 ### ES6的语法解构赋值/解构赋值
 * [解构赋值](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#%E5%8F%98%E9%87%8F%E5%85%88%E5%A3%B0%E6%98%8E%E5%90%8E%E8%B5%8B%E5%80%BC%E6%97%B6%E7%9A%84%E8%A7%A3%E6%9E%84)语法是一种 Javascript 表达式。通过解构赋值, 可以将属性/值从对象/数组中取出,赋值给其他变量。
+* 解构赋值使用了相同的语法，不同的是在表达式左边定义了要从原变量中取出什么变量。
 * 前端部分代码只要一行
 ```
     let {url,method,body,successFn,failFn,header}=options
@@ -390,3 +391,9 @@ jQuery.ajax( [settings ] )
     // let failFn=options.failFn
     // let header=options.header
 ```
+* 我们还可以继续简化，因为options就是一个形参，那么就直接写到函数的形参里面，代表变为
+```
+window.jQuery.ajax=function({url,method,body,successFn,failFn,header}){
+}//意思是直接从第一个参数里面解构，拿到这六个变量，同时用let声明这六个变量
+```
+

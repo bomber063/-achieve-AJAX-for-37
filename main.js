@@ -67,7 +67,7 @@ window.jQuery=function(nodeOrSelector){
   return nodes
 }
 
-window.jQuery.ajax=function(options){//传入几个参数
+window.jQuery.ajax=function({url,method,body,successFn,failFn,header}){//传入几个参数
   // let url 
   // if(arguments.length===1){
   //   url=options.url
@@ -83,7 +83,7 @@ window.jQuery.ajax=function(options){//传入几个参数
     // let failFn=options.failFn
     // let header=options.header
     //es6语法
-    let {url,method,body,successFn,failFn,header}=options
+    // let {url,method,body,successFn,failFn,header}=options
 
     let request = new XMLHttpRequest()
     request.open(method, url)//这里两个参数分别是请求方法和路径
