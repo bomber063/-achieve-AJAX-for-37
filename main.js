@@ -196,8 +196,8 @@
 //     )
 // })
 
-function success(x){console.log(x)}//这里的x代表request.responseText
-function fail(xx){console.log(xx)}//这里的xx代表request
+// function success(x){console.log(x)}//这里的x代表request.responseText
+// function fail(xx){console.log(xx)}//这里的xx代表request
 // function f1(x){console.log(x)}
 // function f2(xx){console.log(xx)}
 
@@ -213,7 +213,7 @@ myButton.addEventListener('click', function (e) {
   //     console.log(x)//这里的x就是request
   //   }
   // })
-  }).then(success,fail)//如果成功就调用success函数，如果失败就调用fail函数
+  }).then((x)=>{console.log(x)},(xx)=>{console.log(xx)})//把两个函数直接写到then后面,这里第一个的x代表request.responseText,这里第二个的xx代表request
 })
 
 

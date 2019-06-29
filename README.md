@@ -515,3 +515,7 @@ myButton.addEventListener('click', function (e) {
   }).then(success,fail)//如果成功就调用success函数，如果失败就调用fail函数
 })
 ```
+* 我们可以简化这个promise写法,把两个函数直接写到then后面
+```
+  }).then((x)=>{console.log(x)},(xx)=>{console.log(xx)})//把两个函数直接写到then后面,这里第一个的x代表request.responseText,这里第二个的xx代表request
+```
