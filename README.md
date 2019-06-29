@@ -629,11 +629,12 @@ window.jQuery.ajax=function({url,method,body,success,fail}){//传入几个参数
 ```
 ### 作业2
 升级你的 jQuery.ajax 满足 Promise 规则  
-
+```
 jQuery.ajax({  
     url: '/xxx',  
     method: 'get'  
-}).then(success, fail)  
+}).then(success, fail)
+```  
 * 代码如下：
 ```
 window.jQuery = function(nodeOrSelector){
