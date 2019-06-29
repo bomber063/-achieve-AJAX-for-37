@@ -435,3 +435,52 @@ var b = 3;
 |var <br>a=1|let <br>a=1|
 |f=function(a){<br>console.log(a)<br>}|f=(a)=>{console.log(a)}|
 |var x='???'//x的值从别的地方拿过来的一个不知道的值<br> var o={}<br>o[x]=true|var x='???'<br> var o={<br>[o]:true<br>}|
+
+### 回调函数的问题解决
+* 如果使用多个库，而他们对于回调函数的使用方式不同，比如
+* frank的库
+```
+ frank.ajax({
+   成功:function(){}//成功就传一个成功
+   失败:function(){}//失败就传一个失败
+ })
+```
+* jack的库
+```
+ jack.ajax(null,null,null,successFn,failFn)//如果成功就传给我第四个参数，如果失败就传给我第五个参数
+```
+* node.js的库
+```
+ fs.readFile(function(error,content){
+   if(error){
+     //失败
+   }else{
+     //成功
+   }
+ })//只需要传一个函数,这个函数里面有两个参数,第一个参数是失败的错误，第二个参数是文件真正的内容
+```
+* jQuery的库
+```
+ jQuery.ajax(){
+   success:()=>{},
+   error:()=>{}
+ }
+```
+* 讲了这么多，回调函数的问题在于，**如果不看文档就完全不知道要传什么参数或者内容。这么多AJAX，每个人和每个库封装的风格不同，大家可以随意取名字，不知道成功与失败传到哪里**。
+* 所以我们就可以定一个一起可以用的规范，这个规范就是[promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Using_promises)规范,它是一个确定函数形式的规范。
+* 最新的方式就是返回一个promise对象，使得你可以将你的 callback 绑定在该 promise 上（如下所示）：
+* 函数createAudioFileAsync()
+```
+createAudioFileAsync(audioSettings, successCallback, failureCallback)
+```
+* 如果函数createAudioFileAsync()被重写为返回Promise 对象，就可以像这样简单的使用：
+```
+const promise = createAudioFileAsync(audioSettings); 
+promise.then(successCallback, failureCallback);
+```
+*  简写为：
+```
+ createAudioFileAsync(audioSettings).then(successCallback, failureCallback);
+```
+* 我们可以看到，[promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)里面会有一个then，然后then会返回一个带有promise对象的函数.
+* [then()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/then) 方法返回一个  Promise 。它最多需要有两个参数：Promise 的成功和失败情况的回调函数。
