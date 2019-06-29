@@ -213,7 +213,13 @@ myButton.addEventListener('click', function (e) {
   //     console.log(x)//这里的x就是request
   //   }
   // })
-  }).then((x)=>{console.log(x)},(xx)=>{console.log(xx)})//把两个函数直接写到then后面,这里第一个的x代表request.responseText,这里第二个的xx代表request
+  }).then(//把两个函数直接写到then后面,这里第一个的x代表request.responseText,这里第二个的xx代表request
+    (x)=>{console.log('success1',x); return '第一个成功后return的结果'},
+    (xx)=>{console.log('error1');return '第一个失败后return的结果'
+    }).then(
+    (x)=>{console.log(x+'你好')},//上一次处理的结果成功就调用成功后的return作为下一个then里面函数的参数x,失败就调用失败后的return作为下一个then里面函数的参数x
+    (xx)=>{console.log(xx+'error2')//这个是本次如果失败才会出现
+    })
 })
 
 

@@ -519,3 +519,22 @@ myButton.addEventListener('click', function (e) {
 ```
   }).then((x)=>{console.log(x)},(xx)=>{console.log(xx)})//把两个函数直接写到then后面,这里第一个的x代表request.responseText,这里第二个的xx代表request
 ```
+* then有两个好处：
+1. **promise的意义就是你完全不用去已经这个回调函数的名字到底是success还是成功，error还是fail，还是别的名字啦**
+2. 你可以对同一种状态(对一个结果)进行多次处理，这样就避免了回调函数里面写入两个或者多个函数的操作。
+* 比如代码：
+```
+myButton.addEventListener('click', function (e) {
+  window.jQuery.ajax({
+    url:'/xxx',
+    method:'post',
+  }).then(//把两个函数直接写到then后面,这里第一个的x代表request.responseText,这里第二个的xx代表request
+    (x)=>{console.log('success1'); return '第一个成功后return的结果'},
+    (xx)=>{console.log('error1');return '第一个失败后return的结果'
+    }).then(
+    (x)=>{console.log(x+'你好')},//上一次处理的结果成功就调用成功后的return作为下一个then里面函数的参数x,失败就调用失败后的return作为下一个then里面函数的参数x
+    (xx)=>{console.log(xx+'error2')//这个是本次如果失败才会出现
+    })
+})
+```
+* 还有一点需要注意，**这里成功后返回的参数x，也就是responseText是一个对象**.是因为jQuery发现你的返回值的content-type是text/json，它就会把它由字符串转成对象。也就是自动parse了。
