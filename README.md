@@ -377,6 +377,7 @@ jQuery.ajax( [settings ] )
 
 ### ES6的语法解构赋值/解构赋值
 * [解构赋值](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#%E5%8F%98%E9%87%8F%E5%85%88%E5%A3%B0%E6%98%8E%E5%90%8E%E8%B5%8B%E5%80%BC%E6%97%B6%E7%9A%84%E8%A7%A3%E6%9E%84)语法是一种 Javascript 表达式。通过解构赋值, 可以将属性/值从对象/数组中取出,赋值给其他变量。
+* JavaScript 中，解构赋值的作用类似于 Perl 和 Python 语言中的相似特性。
 * 解构赋值使用了相同的语法，不同的是在表达式左边定义了要从原变量中取出什么变量。
 * 前端部分代码只要一行
 ```
@@ -396,4 +397,41 @@ jQuery.ajax( [settings ] )
 window.jQuery.ajax=function({url,method,body,successFn,failFn,header}){
 }//意思是直接从第一个参数里面解构，拿到这六个变量，同时用let声明这六个变量
 ```
+* 注意：在( ... )没有声明的情况下使用对象文字解构赋值时，需要使用赋值语句周围的括号。  
 
+{a, b} = {a: 1, b: 2}不是有效的独立语法，因为{a, b}左侧被视为块而不是对象文字。  
+
+但是({a, b} = {a: 1, b: 2})，原样是有效的var {a, b} = {a: 1, b: 2}  
+
+您的( ... )表达式需要以分号开头，或者可以用于在前一行执行函数。  
+* 例如**代码没有括号，并且也没有声明就会报错**
+```
+{ a, b } = { a: 10, b: 20 };
+```
+* 可以改成有一个声明或者有一个括号就没有问题
+```
+({ a, b } = { a: 10, b: 20 });//或者有一个括号
+var { a, b } = { a: 10, b: 20 };//改成有一个声明
+let { a, b } = { a: 10, b: 20 };//改成有一个声明
+```
+### 调换变量的值在ES6中的用法
+* 在ES5之前调换两个变量的值一般用到如下代码
+```
+var a='a'
+var b='b'
+temp=a
+a=b
+b=temp
+```
+* 但是在ES6里面代码很简单哦，这样就可以啦,**注意[a, b] = [b, a]前面的一行代码必须要有分号**
+```
+var a = 1
+var b = 3;
+[a, b] = [b, a]
+```
+### ES5和ES6的部分语法对比
+|ES5|ES6|
+|:--:|:--:|
+|var <br>a=1|let <br>a=1|
+|f=function(a){<br>console.log(a)<br>}|f=(a)=>{console.log(a)}|
+|var x='???'//x的值从别的地方拿过来的一个不知道的值<br> var o={}<br>o[x]=true|var x='???'<br> var o={<br>[o]:true<br>}|
