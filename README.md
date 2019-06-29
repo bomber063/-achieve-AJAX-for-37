@@ -484,3 +484,26 @@ promise.then(successCallback, failureCallback);
 ```
 * 我们可以看到，[promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)里面会有一个then，然后then会返回一个带有promise对象的函数.
 * [then()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/then) 方法返回一个  Promise 。它最多需要有两个参数：Promise 的成功和失败情况的回调函数。
+* jQuery中的写法
+```
+function f1(x){console.log(x)}
+function f2(xx){console.log(xx)}
+
+myButton.addEventListener('click', function (e) {
+  window.jQuery.ajax({
+    url:'/xxx',
+    method:'post',
+    success:(x)=>{
+      f1.call(undefined,x)//这里的x是request.responseText
+      f2.call(undefined,x)//这里的x是request.responseText
+    },
+    error:(x)=>{
+      console.log(x)//这里的x就是request
+    }
+  })
+})
+```
+<!-- * jQuery中提供了一种promise的写法:
+```
+
+``` -->
