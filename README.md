@@ -595,3 +595,70 @@ myButton.addEventListener('click', (e)=>{
   )
 })
 ```
+
+### 作业1
+按照课堂上的思路，封装一个 jQuery.ajax  
+
+jQuery.ajax(url,method,body,success, fail)  
+
+满足这种 API。  
+* 代码如下
+```
+window.jQuery=function(nodeOrSelector){
+  let nodes={}
+  nodes.addClass=function(){}
+  nodes.html=function(){}
+  return nodes
+}
+
+window.jQuery.ajax=function({url,method,body,success,fail}){//传入几个参数
+    let request = new XMLHttpRequest()
+    request.open(method, url)//这里两个参数分别是请求方法和路径
+    request.onreadystatechange = function () {
+      if (request.readyState === 4) {
+        if (request.status >= 200 && request.status < 300) {
+          success.call(undefined,request.responseText)//这里的参数是调用成功后的函数
+        }
+        else if (request.status >= 400) {
+          fail.call(undefined,request.responseText)//这里的参数是调用失败后的函数
+        }
+      }
+    }
+    request.send(body)//这里的参数是请求的主体
+}
+```
+### 作业2
+升级你的 jQuery.ajax 满足 Promise 规则  
+
+jQuery.ajax({  
+    url: '/xxx',  
+    method: 'get'  
+}).then(success, fail)  
+* 代码如下：
+```
+window.jQuery = function(nodeOrSelector){
+  let nodes = {}
+  nodes.addClass = function(){}
+  nodes.html = function(){}
+  return nodes
+}
+window.$ = window.jQuery
+
+window.jQuery.ajax = function({url, method, body}){//这里的successFn和failFn已经删除，由下面的resolve和reject代替
+  return new Promise(function(resolve, reject){//如果成功就调用resolve，如果失败就调用reject
+    let request = new XMLHttpRequest()
+    request.open(method, url) // 配置request
+
+    request.onreadystatechange = ()=>{
+      if(request.readyState === 4){
+        if(request.status >= 200 && request.status < 300){
+          resolve.call(undefined, request.responseText)//这里把successFn改为resolve
+        }else if(request.status >= 400){
+          reject.call(undefined, request)//这里把failFn改为reject
+        }
+      }
+    }
+    request.send(body)
+  })
+}
+```
