@@ -196,24 +196,24 @@
 //     )
 // })
 
-// function success(x){console.log(x)}//这里的x代表request.responseText
-// function fail(xx){console.log(xx)}//这里的xx代表request
-function f1(x){console.log(x)}
-function f2(xx){console.log(xx)}
+function success(x){console.log(x)}//这里的x代表request.responseText
+function fail(xx){console.log(xx)}//这里的xx代表request
+// function f1(x){console.log(x)}
+// function f2(xx){console.log(xx)}
 
 myButton.addEventListener('click', function (e) {
   window.jQuery.ajax({
     url:'/xxx',
     method:'post',
-    success:(x)=>{
-      f1.call(undefined,x)//这里的x是request.responseText
-      f2.call(undefined,x)//这里的x是request.responseText
-    },
-    error:(x)=>{
-      console.log(x)//这里的x就是request
-    }
-  })
-  // }).then(success,fail)
+  //   success:(x)=>{
+  //     f1.call(undefined,x)//这里的x是request.responseText
+  //     f2.call(undefined,x)//这里的x是request.responseText
+  //   },
+  //   error:(x)=>{
+  //     console.log(x)//这里的x就是request
+  //   }
+  // })
+  }).then(success,fail)//如果成功就调用success函数，如果失败就调用fail函数
 })
 
 

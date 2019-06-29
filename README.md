@@ -503,7 +503,15 @@ myButton.addEventListener('click', function (e) {
   })
 })
 ```
-<!-- * jQuery中提供了一种promise的写法:
+* jQuery中提供了一种promise的写法,**这个回调函数就可以没有名字啦**，改写代码后：
 ```
+function success(x){console.log(x)}//这里的x代表request.responseText
+function fail(xx){console.log(xx)}//这里的xx代表request
 
-``` -->
+myButton.addEventListener('click', function (e) {
+  window.jQuery.ajax({
+    url:'/xxx',
+    method:'post',
+  }).then(success,fail)//如果成功就调用success函数，如果失败就调用fail函数
+})
+```
