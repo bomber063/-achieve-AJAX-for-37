@@ -1,10 +1,10 @@
-// window.jQuery = function(nodeOrSelector){
-//   let nodes = {}
-//   nodes.addClass = function(){}
-//   nodes.html = function(){}
-//   return nodes
-// }
-// window.$ = window.jQuery
+window.jQuery = function(nodeOrSelector){
+  let nodes = {}
+  nodes.addClass = function(){}
+  nodes.html = function(){}
+  return nodes
+}
+window.$ = window.jQuery
 
 // window.Promise = function(fn){
 //   // ...
@@ -13,43 +13,43 @@
 //   }
 // }
 
-// window.jQuery.ajax = function({url, method, body, headers}){
-//   return new Promise(function(resolve, reject){
-//     let request = new XMLHttpRequest()
-//     request.open(method, url) // 配置request
-//     for(let key in headers) {
-//       let value = headers[key]
-//       request.setRequestHeader(key, value)
-//     }
-//     request.onreadystatechange = ()=>{
-//       if(request.readyState === 4){
-//         if(request.status >= 200 && request.status < 300){
-//           resolve.call(undefined, request.responseText)
-//         }else if(request.status >= 400){
-//           reject.call(undefined, request)
-//         }
-//       }
-//     }
-//     request.send(body)
-//   })
-// }
+window.jQuery.ajax = function({url, method, body, headers}){//这里的successFn和failFn已经删除，由下面的resolve和reject代替
+  return new Promise(function(resolve, reject){//如果成功就调用resolve，如果失败就调用reject
+    let request = new XMLHttpRequest()
+    request.open(method, url) // 配置request
+    for(let key in headers) {
+      let value = headers[key]
+      request.setRequestHeader(key, value)
+    }
+    request.onreadystatechange = ()=>{
+      if(request.readyState === 4){
+        if(request.status >= 200 && request.status < 300){
+          resolve.call(undefined, request.responseText)//这里把successFn改为resolve
+        }else if(request.status >= 400){
+          reject.call(undefined, request)//这里把failFn改为reject
+        }
+      }
+    }
+    request.send(body)
+  })
+}
 
-// myButton.addEventListener('click', (e)=>{
-//   let promise = window.jQuery.ajax({
-//     url: '/xxx',
-//     method: 'get',
-//     headers: {
-//       'content-type':'application/x-www-form-urlencoded',
-//       'frank': '18'
-//     }
-//   })
+myButton.addEventListener('click', (e)=>{
+  let promise = window.jQuery.ajax({
+    url: '/xxx',
+    method: 'get',
+    headers: {
+      'content-type':'application/x-www-form-urlencoded',
+      'bomber': '18'
+    }
+  })
 
-//   promise.then(
-//     (text)=>{console.log(text)},
-//     (request)=>{console.log(request)}
-//   )
+  promise.then(
+    (text)=>{console.log(text)},
+    (request)=>{console.log(request)}
+  )
 
-// })
+})
 
 // myButton.addEventListener('click',()=>{
 //   let request=new XMLHttpRequest()
@@ -201,26 +201,26 @@
 // function f1(x){console.log(x)}
 // function f2(xx){console.log(xx)}
 
-myButton.addEventListener('click', function (e) {
-  window.jQuery.ajax({
-    url:'/xxx',
-    method:'post',
-  //   success:(x)=>{
-  //     f1.call(undefined,x)//这里的x是request.responseText
-  //     f2.call(undefined,x)//这里的x是request.responseText
-  //   },
-  //   error:(x)=>{
-  //     console.log(x)//这里的x就是request
-  //   }
-  // })
-  }).then(//把两个函数直接写到then后面,这里第一个的x代表request.responseText,这里第二个的xx代表request
-    (x)=>{console.log('success1',x); return '第一个成功后return的结果'},
-    (xx)=>{console.log('error1');return '第一个失败后return的结果'
-    }).then(
-    (x)=>{console.log(x+'你好')},//上一次处理的结果成功就调用成功后的return作为下一个then里面函数的参数x,失败就调用失败后的return作为下一个then里面函数的参数x
-    (xx)=>{console.log(xx+'error2')//这个是本次如果失败才会出现
-    })
-})
+// myButton.addEventListener('click', function (e) {
+//   window.jQuery.ajax({
+//     url:'/xxx',
+//     method:'post',
+//   //   success:(x)=>{
+//   //     f1.call(undefined,x)//这里的x是request.responseText
+//   //     f2.call(undefined,x)//这里的x是request.responseText
+//   //   },
+//   //   error:(x)=>{
+//   //     console.log(x)//这里的x就是request
+//   //   }
+//   // })
+//   }).then(//把两个函数直接写到then后面,这里第一个的x代表request.responseText,这里第二个的xx代表request
+//     (x)=>{console.log('success1',x); return '第一个成功后return的结果'},
+//     (xx)=>{console.log('error1');return '第一个失败后return的结果'
+//     }).then(
+//     (x)=>{console.log(x+'你好')},//上一次处理的结果成功就调用成功后的return作为下一个then里面函数的参数x,失败就调用失败后的return作为下一个then里面函数的参数x
+//     (xx)=>{console.log(xx+'error2')//这个是本次如果失败才会出现
+//     })
+// })
 
 
 

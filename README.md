@@ -538,3 +538,60 @@ myButton.addEventListener('click', function (e) {
 })
 ```
 * 还有一点需要注意，**这里成功后返回的参数x，也就是responseText是一个对象**.是因为jQuery发现你的返回值的content-type是text/json，它就会把它由字符串转成对象。也就是自动parse了。
+
+### promise的自己手写及封装
+* promise代码类似如下：
+```
+ window.Promise = function(fn){
+    ...
+   return {
+     then: function(){}
+   }
+ }
+```
+* promise会有一个then属性，then属性会返回一个promise的对象.
+* 并且AJAX会返回一个promise实例，这个promise实例有一个then属性，then也会返回一个promise对象，就可以继续使用then，
+* 所以promise这个函数接受一个函数，返回一个带then属性的哈希。
+* 这个then它接受两个函数，返回一个带then属性的哈希.
+* 所以promise可以使用then来链式操作。
+* 所以最后封装为这样代码
+```
+window.jQuery.ajax = function({url, method, body, headers}){//这里的successFn和failFn已经删除，由下面的resolve和reject代替
+  return new Promise(function(resolve, reject){//如果成功就调用resolve，如果失败就调用reject
+    let request = new XMLHttpRequest()
+    request.open(method, url) // 配置request
+    for(let key in headers) {
+      let value = headers[key]
+      request.setRequestHeader(key, value)
+    }
+    request.onreadystatechange = ()=>{
+      if(request.readyState === 4){
+        if(request.status >= 200 && request.status < 300){
+          resolve.call(undefined, request.responseText)//这里把successFn改为resolve
+        }else if(request.status >= 400){
+          reject.call(undefined, request)//这里把failFn改为reject
+        }
+      }
+    }
+    request.send(body)
+  })
+}
+```
+* 使用的代码可以是：
+```
+myButton.addEventListener('click', (e)=>{
+  let promise = window.jQuery.ajax({
+    url: '/xxx',
+    method: 'get',
+    headers: {
+      'content-type':'application/x-www-form-urlencoded',
+      'bomber': '18'
+    }
+  })
+
+  promise.then(
+    (text)=>{console.log(text)},
+    (request)=>{console.log(request)}
+  )
+})
+```
